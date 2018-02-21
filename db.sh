@@ -93,6 +93,7 @@ fi
 # Make MySQL connectable from outside world without SSH tunnel
 echo 'bind-address=0.0.0.0' >> /etc/my.cnf
 systemctl stop mysqld
+systemctl start mysqld
 
 # Create DB
 echo "Creating databese: bugtrckr"
