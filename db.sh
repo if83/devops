@@ -64,14 +64,48 @@ rm -r $MYSQL_RELEASE_FILE
 systemctl start mysqld
 #get mysql root pass from mysqld.log
 TP=$(grep 'temporary password' /var/log/mysqld.log|cut -d ":" -f 4|cut -d ' ' -f 2)
+DATABASE_PASS=la_3araZa
 
-#securing MySQL
-mysql -uroot  --connect-expired-password -p$(echo $TP) -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$TP';"
-mysql -uroot  -p$(echo $TP) -e "delete from mysql.db where Db like 'test%';"
-mysql -uroot  -p$(echo $TP) -e "flush privileges;"
-#save MySQL root password 
-echo $TP>/opt/tp.txt
-echo "Mysql section FINISHED!!"
-iptables -I INPUT -p tcp -s $SQL_ALLOWED --dport 3306 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-iptables -I OUTPUT -p tcp --sport 3306 -m conntrack --ctstate ESTABLISHED -j ACCEPT
-history -c
+# set password to mysql
+mysqladmin --user=root --password="$TP" password "$DATABASE_PASS"
+
+# Secure_installation_script automation (Only for mysql < 5.7)
+echo "Secure_installation_script automation (for MySQL 5.6 only)"
+# sudo service mysqld stop
+sqlVersion=5.7
+sqlVersionCurrent=$(mysql --version|awk '{ print $5 }'|awk -F\.21, '{ print $1 }')
+# set passwrd to mysql
+
+if [ "$sqlVersionCurrent" = "$sqlVersion" ]
+	then
+	mysql -u root -p"$DATABASE_PASS" -e "FLUSH PRIVILEGES"
+	echo "MySQL version > 5.6"	
+else
+# mysql -u root -p"$DATABASE_PASS" -e "UPDATE mysql.user SET Password=PASSWORD(mysql -u root -p"$DATABASE_PASS" -e "FLUSH PRIVILEGES"'$DATABASE_PASS') WHERE User='root'"
+	mysql -u root -p"$DATABASE_PASS" -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
+	mysql -u root -p"$DATABASE_PASS" -e "DELETE FROM mysql.user WHERE User=''"
+	mysql -u root -p"$DATABASE_PASS" -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%'"
+	mysql -u root -p"$DATABASE_PASS" -e "FLUSH PRIVILEGES"
+	#echo $SqlVersionCurrent
+	#echo "NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
+fi
+
+# Make MySQL connectable from outside world without SSH tunnel
+echo 'bind-address=0.0.0.0' >> /etc/my.cnf
+systemctl stop mysqld
+
+# Create DB
+echo "Creating databese: bugtrckr"
+mysql -u root -p"$DATABASE_PASS" -e "CREATE DATABASE bugtrckr DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci;"
+# PRIVILEGES
+mysql -u root -p"$DATABASE_PASS" -e "GRANT ALL ON bugtrckr.* TO 'bugtrckr'@'%' IDENTIFIED BY '$DATABASE_PASS';"
+mysql -u root -p"$DATABASE_PASS" -e "GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY '$DATABASE_PASS';"
+mysql -u root -p"$DATABASE_PASS" -e "FLUSH PRIVILEGES"
+
+# Add tcp 3306 port to firewall
+echo "Allow 3306 port"
+# Restart Firewalld service
+systemctl start firewalld
+firewall-cmd --zone=public --add-port=3306/tcp --permanent
+firewall-cmd --zone=public --add-service=http --permanent
+firewall-cmd --reload
