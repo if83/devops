@@ -32,8 +32,6 @@ echo "!PgSQL section started!"
 sudo -u postgres createuser $SONAR_USR
 sudo -u postgres createdb  -O $SONAR_USR $SONAR_DB
 echo "ALTER USER $SONAR_USR with encrypted password '$SONAR_PASS';" | sudo -u postgres psql
-iptables -I INPUT -p tcp -s $SONAR_HOST --dport 5432 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-iptables -I OUTPUT -p tcp --sport 5432 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 #tuning configs
 file='/var/lib/pgsql/9.6/data/pg_hba.conf'
 MATCH='# IPv4 local connections:'
@@ -103,10 +101,11 @@ mysql -u root -p"$DATABASE_PASS" -e "GRANT ALL ON bugtrckr.* TO 'bugtrckr'@'%' I
 mysql -u root -p"$DATABASE_PASS" -e "GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY '$DATABASE_PASS';"
 mysql -u root -p"$DATABASE_PASS" -e "FLUSH PRIVILEGES"
 
-# Add tcp 3306 port to firewall
-echo "Allow 3306 port"
+# Add tcp 3306 ant 5432 ports to firewall
+echo "Allow 3306 and 5432 ports"
 # Restart Firewalld service
 systemctl start firewalld
 firewall-cmd --zone=public --add-port=3306/tcp --permanent
+firewall-cmd --zone=public --add-port=5432/tcp --permanent
 firewall-cmd --zone=public --add-service=http --permanent
 firewall-cmd --reload
