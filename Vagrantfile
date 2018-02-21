@@ -4,18 +4,18 @@
 Vagrant.configure("2") do |config|
 
     # --- MV with Local Repository ---
-    #config.vm.define "repo" do |repo|
-    #repo.vm.box = "centos/7"
-    #repo.vm.hostname = "repo.local"
-    #repo.vm.network "private_network", ip: "192.168.56.191"
+    config.vm.define "repo" do |repo|
+    repo.vm.box = "centos/7"
+    repo.vm.hostname = "repo.local"
+    repo.vm.network "private_network", ip: "192.168.56.191"
     #repo.vm.network :forwarded_port, guest: 22, host: 10122, id: "ssh"
     # web.ssh.private_key_path = "/home/savr/.vagrant.d/insecure_private_key"
     # web.ssh.forward_agent = true
 
-    #repo.vm.provider "virtualbox" do |vb|
-      #vb.memory = "512"
-      #vb.name = "Repo_VM"
-    #end
+    repo.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+      vb.name = "Repo_VM"
+    end
 
     #repo.vm.provision "shell",  path: "repo.sh"
   #end
