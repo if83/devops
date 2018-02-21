@@ -8,7 +8,7 @@ LOG=/var/log/vagrant/java.log
 # 1. Visit http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html?printOnly=1
 # 2. Accept the Oracle Binary Code License Agreement for Java SE
 # 3. Put link of your version "jdk-8u161*.rpm" to JDK_URL
-JDK_URL="http://download.oracle.com/otn-pub/java/jdk/8u161-b12/2f38c3b165be4555a1fa6e98c45e0808/jdk-8u161-linux-x64.rpm"
+JDK_URL="http://download.oracle.com/otn-pub/java/jdk/8u162-b12/0da788060d494f5095bf8624735fa2f1/jdk-8u162-linux-x64.rpm"
 
 # -- Insert Maven URL --
 # 1. Visit https://maven.apache.org/download.cgi
@@ -36,7 +36,7 @@ else
   wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "$JDK_URL" 2>$LOG
 
   # --Add Veriables and Edit app.sh file --
-  JDK_LOCATION=/usr/local/java/jdk1.8.0_161 # знаходити автоматом
+  JDK_LOCATION=/usr/local/java/jdk1.8.0_162 # знаходити автоматом
   export JAVA_HOME=$JDK_LOCATION
   export JRE_HOME=$JDK_LOCATION/jre
   export PATH=$PATH:$JDK_LOCATION/bin:$JDK_LOCATION/jre/bin

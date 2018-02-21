@@ -22,6 +22,7 @@ LOG=/var/log/vagrant/start.log
   sudo ntpdate -u pool.ntp.org 2>>$LOG
   echo "Time zone is set to Kiev" 1>>$LOG
 
+
 # -- add basic tools to VM --
 sudo yum update -y 2>>$LOG
 
@@ -34,3 +35,9 @@ for i in ${APPS[@]}; do
     sudo yum install $i -y 2>>$LOG
   fi
 done
+
+#Add network hosts
+ sudo -s
+ wget https://raw.githubusercontent.com/bdeputat/bugTrckr/master/bugTrckr_conf/hosts.local
+ cat hosts.local >>/etc/hosts
+ rm -f hosts.local
