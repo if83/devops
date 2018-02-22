@@ -64,10 +64,12 @@ sonar.jdbc.username=$SONAR_USR
 sonar.jdbc.password=$SONAR_PASS
 sonar.jdbc.url=jdbc:postgresql://$DB_HOST/$SONAR_DB
 #Tuning the Web Server for better performance
-sonar.web.javaOpts=-server
+#sonar.web.javaOpts=-server
 #sonar.web.host=$HOST_IP
 #sonar.web.port=$SONAR_PORT
-sonar.web.context=/">>$SONAR_CONF
+#sonar.web.context=/
+#sonar.web.javaOpts=-Xmx1024m -Xms128m -XX:+HeapDumpOnOutOfMemoryError
+#sonar.ce.javaOpts=-Xmx1024m -Xms128m -XX:+HeapDumpOnOutOfMemoryError">>$SONAR_CONF
 
 sysctl -w vm.max_map_count=262144
 sysctl -w fs.file-max=65536

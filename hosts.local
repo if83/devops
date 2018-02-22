@@ -1,6 +1,6 @@
-192.168.56.150	db.local
-192.168.56.160	web.local
-192.168.56.170	jenkins.local
-192.168.56.180	sonar.local
-192.168.56.190	gitlab.local
-192.168.56.191	repo.local
+192.168.56.150	db.local         db
+192.168.56.160	web.local        web
+192.168.56.170	jenkins.local    jenkins
+192.168.56.180	sonar.local      sonar
+192.168.56.190	gitlab.local     gitlab
+192.168.56.191	repo.local       repo
