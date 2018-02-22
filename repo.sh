@@ -4,17 +4,19 @@
 URLS=(
 #JAVA(rpm) URL: "http://repo.local.localrepo/jdk-8u162-linux-x64.rpm"
 --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u162-b12/0da788060d494f5095bf8624735fa2f1/jdk-8u162-linux-x64.rpm"
-#JAVA(rpm) http://repo.local.localrepo/jdk-8u162-linux-x64.rpm
+#JAVA(tar.gz)  URL: http://repo.local.localrepo/jdk-8u162-linux-x64.rpm
 --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie"  "http://download.oracle.com/otn-pub/java/jdk/8u162-b12/0da788060d494f5095bf8624735fa2f1/jdk-8u162-linux-x64.tar.gz"
-#mysql
+#MySQL(rpm) URL: http://repo.local.localrepo/mysql57-community-release-el7-11.noarch.rpm
 https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
-#postgresql
+#Postgre (rpm) URL: http://repo.local.localrepo/pgdg-centos96-9.6-3.noarch.rpm
 https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
-#apache maven
+#Maven (tar.gz) URL: http://repo.local.localrepo/apache-maven-3.5.2-bin.tar.gz
 http://apache.ip-connect.vn.ua/maven/maven-3/3.5.2/binaries/apache-maven-3.5.2-bin.tar.gz
-#tomcat
+#Tomcat (tar.gz) URL:  http://repo.local.localrepo/apache-tomcat-7.0.85.tar.gz
 http://www-us.apache.org/dist/tomcat/tomcat-7/v7.0.85/bin/apache-tomcat-7.0.85.tar.gz
-#teamcity
+#Sonarqube   URL: http://repo.local.localrepo/
+https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-6.7.1.zip
+#TeamCity (tar.gz) http://repo.local.localrepo/TeamCity-2017.2.2.tar.gz
 https://download.jetbrains.com/teamcity/TeamCity-2017.2.2.tar.gz
 )
 # -- create log file --
@@ -66,5 +68,5 @@ SEARCH=$(sudo find /var/www/html/localrepo/ -name "${i##*/}" | wc -l)
   fi
 done
 
-
+#sudo yum install createrepo -y 
 #sudo createrepo $REPO_DIR
