@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # DevOps
 
 ## This document lists some ground rules to bring up a puppy collaborative atmosphere to our team.
@@ -56,3 +57,7 @@
    If you ready to commit to "master" create Pull Request. [More about Pull Request](https://github.com/yangsu/pull-request-tutorial/blob/master/Readme.md)
 
 Lets "brati lopati & kopati" team :)
+=======
+# vagrant
+Vagrantfile to automate creation and launch Java Web Application
+>>>>>>> dev
