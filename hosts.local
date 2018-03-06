@@ -4,3 +4,4 @@
 192.168.56.180	sonar.local      sonar
 192.168.56.190	gitlab.local     gitlab
 192.168.56.191	repo.local       repo
+192.168.56.192  puppet.local     puppet

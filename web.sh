@@ -12,7 +12,7 @@ function drawtext() {
 # Make sure we run with root privileges
 if [ $UID != 0 ];
 	then
-# not root, use 
+# not root, use
 	echo "This script needs root privileges, rerunning it now using !"
 	 "${SHELL}" "$0" $*
 	exit $?
@@ -59,12 +59,12 @@ echo "$(drawtext bold 2 "[ OK ]")" --- "Activating System Environment Variables"
 HOME_DIR="tomcat_install"
 LOG_FILE=/$HOME_DIR/install.log
 
-# Create WorkSpace 
+# Create WorkSpace
 cd /
 mkdir ${HOME_DIR}
 cd ${HOME_DIR}
 echo "$(drawtext bold 2 "[ OK ]")" --- "File "$(drawtext bold 2 "$LOG_FILE")" successfully created"
-echo START System --- $( date +"%H-%M-%S_%d-%m-%Y") > ${LOG_FILE} 
+echo START System --- $( date +"%H-%M-%S_%d-%m-%Y") > ${LOG_FILE}
 echo "$(drawtext bold 2 "START System")"  --- $( date +"%H-%M-%S_%d-%m-%Y")
 
 # <----- Install Other Program ------>
@@ -76,8 +76,8 @@ echo "$(drawtext bold 2 "[ OK ]")" --- "System Updated"
 
 #2. Install JAVA 1.8.0_162
 #info: https://www.digitalocean.com/community/tutorials/how-to-install-java-on-centos-and-fedora
-cd /${HOME_DIR} 
-wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u162-b12/0da788060d494f5095bf8624735fa2f1/jre-8u162-linux-x64.rpm" 
+cd /${HOME_DIR}
+wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u162-b12/0da788060d494f5095bf8624735fa2f1/jre-8u162-linux-x64.rpm"
 rpm -ihv jre-8u162-linux-x64.rpm 2>>${LOG_FILE}
 rm -f jre-8u162-linux-x64.rpm 2>>${LOG_FILE}
 echo "$(drawtext bold 2 "[ OK ]")" --- ""$(drawtext bold 2 "JAVA 1.8.0_162")" successfully installed"
@@ -93,7 +93,7 @@ echo "$(drawtext bold 2 "[ OK ]")" --- ""$(drawtext bold 2 "Apache-Tomcat")" suc
 
 
 #Configure Virtual host on Tomcat
-##Configure server.xml host on Tomcat 
+##Configure server.xml host on Tomcat
 cd /${HOME_DIR}
 #wget https://raw.githubusercontent.com/bdeputat/bugTrckr/master/bugTrckr_conf/server.xml
 #mv server.xml ${THOME_VALUE}/conf/server.xml
@@ -111,9 +111,9 @@ cd "${THOME_VALUE}"
 chgrp -R "${Tomcat_group}" "${HOME_DIR}"
 chgrp -R "${Tomcat_group}" "${THOME_VALUE}"
 #Next, give the tomcat group read access to the conf directory and all of its contents, and execute access to the directory itself:
-chmod -R g+rwx conf/ webapps/ 
+chmod -R g+rwx conf/ webapps/
 #Then make the tomcat user the owner of the webapps, work, temp, and logs directories:
-chown -R "${SSH_User}" webapps/ work/ temp/ logs/ 
+chown -R "${SSH_User}" webapps/ work/ temp/ logs/
 
 #Install Systemd Unit File
 cd /etc/systemd/system/
@@ -168,7 +168,7 @@ echo "$(drawtext bold 2 "[ OK ]")" --- ""$(drawtext bold 2 "apache-httpd")" succ
 #echo "$(drawtext bold 2 "[ OK ]")" --- ""$(drawtext bold 2 "local.hosts")" successfully created" 2>>${LOG_FILE}
 
 #Configure Firewalld
-systemctl start firewalld 
+systemctl start firewalld
 systemctl enable firewalld
 
 # Add tcp PORT 80 to firewall

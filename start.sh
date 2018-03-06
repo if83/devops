@@ -3,41 +3,67 @@
 ###### START INSTALLATION ######
 
 # -- add tools --
-APPS=(mc net-tools wget git)
+APPS=(mc net-tools wget git ntp ntpdate)
 
 # -- create log file --
-sudo mkdir /var/log/vagrant
+mkdir /var/log/vagrant
 LOG=/var/log/vagrant/start.log
-
-# -- settime time zone --
-#ZONE=`grep ZONE /etc/sysconfig/clock`
-#if [$ZONE == "*Europe/Kiev*"]
-#then
-#  echo "Time zone is corect" 1>$LOG
-#else
-  ping -c 10 8.8.8.8 2>>$LOG
-  sudo rm -fr /etc/localtime 2>>$LOG
-  sudo ln -s /usr/share/zoneinfo/Europe/Kiev /etc/localtime 2>>$LOG
-  sudo yum install -y ntpdate 2>>$LOG
-  sudo ntpdate -u pool.ntp.org 2>>$LOG
-  echo "Time zone is set to Kiev" 1>>$LOG
-
+#exec > $LOG 2>&1
 
 # -- add basic tools to VM --
-sudo yum update -y 2>>$LOG
+yum update -y
 
 # -- install apps --
 for i in ${APPS[@]}; do
-  if yum list installed $i
-  then
-    echo "$i already installed" 2>>$LOG
+  if yum list installed $i; then
+    echo "$i already installed"
   else
-    sudo yum install $i -y 2>>$LOG
+    yum install $i -y
   fi
 done
 
-#Add network hosts
- sudo -s
- wget https://raw.githubusercontent.com/if83/devops/demo1/hosts.local
- cat hosts.local >>/etc/hosts
- rm -f hosts.local
+# -- set timezone --
+timedatectl set-timezone Europe/Kiev
+ntpdate pool.ntp.org
+NTP_CONF=/etc/ntp.conf
+cat >> $NTP_CONF <<EOF
+server 0.ua.pool.ntp.org
+server 1.ua.pool.ntp.org
+server 2.ua.pool.ntp.org
+server 3.ua.pool.ntp.org
+EOF
+systemctl restart ntpd
+systemctl enable ntpd
+echo "Time zone is set to Kiev"
+
+# -- edit hosts --
+HOST_FILE=/etc/hosts
+if grep -q "puppet.local" $HOST_FILE; then
+  echo "$HOST_FILE is already changed"
+else
+  cat >> $HOST_FILE <<EOF
+192.168.56.192	puppet.local  puppet
+192.168.56.160	web.local     web
+192.168.56.150	db.local      db
+EOF
+fi
+
+# -- add Puppet repository --
+rpm -Uvh https://yum.puppet.com/puppet5/puppet5-release-el-7.noarch.rpm
+
+# puppet installation
+if [[ $(hostname) == puppet ]]; then
+  if [[ $(puppetserver -v) == "puppetserver version"* ]]; then
+    echo "puppet is already installed"
+  else
+    yum install puppetserver -y
+    # change RAM to 512MB
+    sed -i 's|-Xms2g -Xmx2g|-Xms512m -Xmx512m|g' /etc/sysconfig/puppetserver
+    sudo iptables -A INPUT -p tcp -m tcp --dport 8140 -j ACCEPT
+    systemctl start puppetserver
+    systemctl enable puppetserver
+  fi
+else
+  yum install puppet-agent -y
+  /opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true
+fi
