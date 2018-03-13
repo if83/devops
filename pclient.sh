@@ -9,15 +9,8 @@ APPS=(mc net-tools wget git)
 if [ $UID != 0 ];
 	then
 # not root, use sudo # $0=./script.sh # $*=treat everything as one word # exit $?=return in bash
-	if [ $UID = 0 ] && [ ! -z "$SUDO_USER" ];
-		then
-		echo "This script needs root privileges, would you log as sudo user?!"
-    	sudo -s
-	else
-		USER="$(whoami)"
-		sudo "${SHELL}" "$0" $*
-		exit $?
-	fi
+	echo "This script needs root privileges, would you log as sudo user?!"
+   	sudo -s
 fi
 
 #  yum -y install ntpdate
