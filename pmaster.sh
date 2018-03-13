@@ -19,15 +19,14 @@ echo "Time zone is set to Kiev"
 
 
 # -- add basic tools to VM --
- yum update -y 2>>$LOG
-
+ yum update -y
 # -- install apps --
 for i in ${APPS[@]}; do
   if yum list installed $i
   then
-    echo "$i already installed" 2>>$LOG
+    echo "$i already installed"
   else
-    yum install $i -y 2>>$LOG
+    yum install $i -y
   fi
 done
 
