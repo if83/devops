@@ -18,6 +18,7 @@ Vagrant.configure("2") do |config|
 
     pmaster.vm.provider "virtualbox" do |vb|
       vb.memory = "2048"
+      vb.cpus = "2"
       vb.name = "MasterOfPuppet_VM"
     end
     pmaster.vm.provision "shell",  path: "pmaster.sh"
@@ -30,6 +31,7 @@ Vagrant.configure("2") do |config|
 
     repo.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
+      vb.cpus = "2"
       vb.name = "Repo_VM"
     end
     repo.vm.provision "shell",  path: "pclient.sh"
@@ -41,6 +43,7 @@ Vagrant.configure("2") do |config|
 
     db.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
+      vb.cpus = "2"
       vb.name = "DB_VM"
     end
     db.vm.provision "shell",  path: "db.sh"
@@ -52,6 +55,7 @@ Vagrant.configure("2") do |config|
 
     #sonar.vm.provider "virtualbox" do |vb|
       #vb.memory = "2048"
+      #vb.cpus = "2"
       #vb.name = "SONAR_VM"
     #end
     #sonar.vm.provision "shell",  path: "pclient.sh"
@@ -63,6 +67,7 @@ Vagrant.configure("2") do |config|
 
     #jenkins.vm.provider "virtualbox" do |vb|
       #vb.memory = "1024"
+      #vb.cpus = "2"
       #vb.name = "Jenkins_VM"
     #end
     #jenkins.vm.provision "shell",  path: "pclient.sh"
@@ -74,6 +79,7 @@ Vagrant.configure("2") do |config|
     
     web.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
+      vb.cpus = "2"
       vb.name = "WEB_VM"
     end
     web.vm.provision "shell",  path: "pclient.sh"
@@ -85,10 +91,10 @@ Vagrant.configure("2") do |config|
 
     zabbix.vm.provider "virtualbox" do |vb|
       vb.memory = "1024"
+      vb.cpus = "2"
       vb.name = "Zabbix_VM"
     end
     zabbix.vm.provision "shell",  path: "pclient.sh"
   end
 
-  #config.vm.provision "shell",  path: "start.sh"
 end
