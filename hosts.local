@@ -1,6 +1,11 @@
+192.168.56.2    haproxy.local    haproxy
+192.168.56.10   pmaster.local    pmaster
 192.168.56.150	db.local         db
+192.168.56.151  dbslave.local    dbslave
 192.168.56.160	web.local        web
+192.168.56.161  web2.local       web2
 192.168.56.170	jenkins.local    jenkins
 192.168.56.180	sonar.local      sonar
 192.168.56.190	gitlab.local     gitlab
 192.168.56.191	repo.local       repo
+192.168.56.200  zabbix.local     zabbix

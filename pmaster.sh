@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 # -- add basic tools to VM --
 APPS=(mc net-tools wget git)

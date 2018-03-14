@@ -2,7 +2,6 @@
 
 PMASTER_IP='192.168.56.10'
 PMASTER_DNAME='pmaster.local'
-HOSTNAME='pclient.local'
 # -- add basic tools to VM --
 APPS=(mc net-tools wget git)
 
@@ -75,7 +74,7 @@ firewall-cmd --reload
 # /opt/puppetlabs/bin/puppet cert sign pclient.local
 
 ## testing 
-/opt/puppetlabs/bin/puppet agent --test
+#/opt/puppetlabs/bin/puppet agent --test
 ##Output:
 
 # Info: Using configured environment 'production'
