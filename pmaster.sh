@@ -1,7 +1,11 @@
-#!bin/bash
+#!/bin/bash
 
+# PCLIENT_IP='192.168.56.20'
+# PCLIENT_DNAME='client.local'
+HOSTNAME='master.local'
 # -- add basic tools to VM --
 APPS=(mc net-tools wget git)
+
 
 if [ $UID != 0 ];
 	then
@@ -30,16 +34,22 @@ for i in ${APPS[@]}; do
   fi
 done
 
+# echo "
+# $PCLIENT_IP    $PCLIENT_DNAME
+# " >> /etc/hosts
+
+echo "$HOSTNAME" > /etc/hostname
+
 rpm -Uvh https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
 yum install -y puppetserver
 sed -i '/JAVA_ARGS="-Xms2g -Xmx2g/s/2g/512m/g' /etc/sysconfig/puppetserver
 
 echo '
 autosign      = true
-dns_alt_names = pmaster.local,server
+dns_alt_names = master.local, master
 [main]
-certname = pmaster.local
-server = pmaster.local
+certname = master.local
+server = master.local
 environment = production
 runinterval = 1h
 ' >>/etc/puppetlabs/puppet/puppet.conf
