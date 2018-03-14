@@ -90,5 +90,5 @@ Vagrant.configure("2") do |config|
     zabbix.vm.provision "shell",  path: "pclient.sh"
   end
 
-  config.vm.provision "shell",  path: "start.sh"
+  #config.vm.provision "shell",  path: "start.sh"
 end

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # -- add basic tools to VM --
-APPS=(mc net-tools wget git)
+APPS=(mc net-tools wget git tree)
 
 if [ $UID != 0 ];
 	then
@@ -17,6 +17,9 @@ yum install -y ntpdate
 ntpdate -u pool.ntp.org
 echo "Time zone is set to Kiev"
 
+#Add network hosts
+ cat /vagrant/hosts.local >>/etc/hosts
+ rm -f /vagrant/hosts.local
 
 # -- add basic tools to VM --
  yum update -y

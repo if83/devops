@@ -12,6 +12,10 @@ if [ $UID != 0 ];
    	sudo -s
 fi
 
+#Add network hosts
+ cat /vagrant/hosts.local >>/etc/hosts
+ rm -f /vagrant/hosts.local
+
 #  yum -y install ntpdate
 #  ntpdate 0.centos.pool.ntp.org
   ping -c 5 8.8.8.8 
@@ -33,11 +37,11 @@ for i in ${APPS[@]}; do
   fi
 done
 
-echo "
-$PMASTER_IP    $PMASTER_DNAME
-" >> /etc/hosts
+#echo "
+#$PMASTER_IP    $PMASTER_DNAME
+#" >> /etc/hosts
 
-echo "$HOSTNAME" > /etc/hostname
+#echo "$HOSTNAME" > /etc/hostname
 
 
 rpm -Uvh https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
@@ -46,7 +50,7 @@ yum install -y puppet-agent
 
 
 echo "[main]
-certname = $(cat /etc/hostname)
+certname = $HOSTNAME
 server = pmaster.local
 environment = production
 runinterval = 1h
