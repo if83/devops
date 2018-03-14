@@ -38,6 +38,5 @@ done
 
 #Add network hosts
  sudo -s
- wget https://raw.githubusercontent.com/if83/devops/demo1/hosts.local
- cat hosts.local >>/etc/hosts
- rm -f hosts.local
+ cat /vagrant/hosts.local >>/etc/hosts
+ rm -f /vagrant/hosts.local
