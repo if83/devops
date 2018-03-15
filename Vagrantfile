@@ -51,7 +51,7 @@ Vagrant.configure("2") do |config|
     dbslave.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
       vb.cpus = "2"
-      vb.name = "DB_VM"
+      vb.name = "DBSlave_VM"
     end
     dbslave.vm.provision "shell",  path: "pclient.sh"
   end
