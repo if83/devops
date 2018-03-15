@@ -4,13 +4,8 @@
 Vagrant.configure("2") do |config|
   config.ssh.keys_only = false
   config.ssh.insert_key = false
-  #config.ssh.dsa_authentication = false
-  # config.vm.box = "~/virtualbox-centos7.box"
   config.vm.box = "centos/7"
   config.ssh.private_key_path = "~/.vagrant.d/insecure_private_key"
-  #config.ssh.password = "vagrant"
-  #config.network :forwarded_port, guest: 22, host: 10122, id: "ssh"
-  #config.ssh.forward_agent = true
 
   config.vm.define "pmaster" do |pmaster|
     pmaster.vm.hostname = 'pmaster.local'
@@ -46,43 +41,79 @@ Vagrant.configure("2") do |config|
       vb.cpus = "2"
       vb.name = "DB_VM"
     end
-    db.vm.provision "shell",  path: "db.sh"
+    db.vm.provision "shell",  path: "pclient.sh"
   end
 
-  #config.vm.define "sonar" do |sonar|
-    #sonar.vm.hostname = 'sonar.local'
-    #sonar.vm.network "private_network", ip: "192.168.56.180"
+  config.vm.define "dbslave" do |dbslave|
+    dbslave.vm.hostname = 'dbslave.local'
+    dbslave.vm.network "private_network", ip: "192.168.56.151"
 
-    #sonar.vm.provider "virtualbox" do |vb|
-      #vb.memory = "2048"
-      #vb.cpus = "2"
-      #vb.name = "SONAR_VM"
-    #end
-    #sonar.vm.provision "shell",  path: "pclient.sh"
-  #end
-
-  #config.vm.define "jenkins" do |jenkins|
-    #jenkins.vm.hostname = 'jenkins.local'
-    #jenkins.vm.network "private_network", ip: "192.168.56.170"
-
-    #jenkins.vm.provider "virtualbox" do |vb|
-      #vb.memory = "1024"
-      #vb.cpus = "2"
-      #vb.name = "Jenkins_VM"
-    #end
-    #jenkins.vm.provision "shell",  path: "pclient.sh"
-  #end
-
-  config.vm.define "web" do |web|
-    web.vm.hostname = 'web.local'
-    web.vm.network "private_network", ip: "192.168.56.160"
-    
-    web.vm.provider "virtualbox" do |vb|
+    dbslave.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
       vb.cpus = "2"
-      vb.name = "WEB_VM"
+      vb.name = "DB_VM"
     end
-    web.vm.provision "shell",  path: "pclient.sh"
+    dbslave.vm.provision "shell",  path: "pclient.sh"
+  end
+
+  config.vm.define "sonar" do |sonar|
+    sonar.vm.hostname = 'sonar.local'
+    sonar.vm.network "private_network", ip: "192.168.56.180"
+
+    sonar.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = "2"
+      vb.name = "SONAR_VM"
+    end
+    sonar.vm.provision "shell",  path: "pclient.sh"
+  end
+
+  config.vm.define "jenkins" do |jenkins|
+    jenkins.vm.hostname = 'jenkins.local'
+    jenkins.vm.network "private_network", ip: "192.168.56.170"
+
+    jenkins.vm.provider "virtualbox" do |vb|
+      vb.memory = "1024"
+      vb.cpus = "2"
+      vb.name = "Jenkins_VM"
+    end
+    jenkins.vm.provision "shell",  path: "pclient.sh"
+  end
+
+  config.vm.define "web1" do |web1|
+    web1.vm.hostname = 'web1.local'
+    web1.vm.network "private_network", ip: "192.168.56.161"
+    
+    web1.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+      vb.cpus = "2"
+      vb.name = "WEB1_VM"
+    end
+    web1.vm.provision "shell",  path: "pclient.sh"
+  end
+
+  config.vm.define "web2" do |web2|
+    web2.vm.hostname = 'web2.local'
+    web2.vm.network "private_network", ip: "192.168.56.162"
+    
+    web2.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+      vb.cpus = "2"
+      vb.name = "WEB2_VM"
+    end
+    web2.vm.provision "shell",  path: "pclient.sh"
+  end
+
+  config.vm.define "balancer" do |balancer|
+    balancer.vm.hostname = 'balancer.local'
+    balancer.vm.network "private_network", ip: "192.168.56.160"
+    
+    balancer.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+      vb.cpus = "2"
+      vb.name = "Balancer_VM"
+    end
+    balancer.vm.provision "shell",  path: "pclient.sh"
   end
 
   config.vm.define "zabbix" do |zabbix|
