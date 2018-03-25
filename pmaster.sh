@@ -39,10 +39,10 @@ sed -i '/JAVA_ARGS="-Xms2g -Xmx2g/s/2g/512m/g' /etc/sysconfig/puppetserver
 
 echo '
 autosign      = true
-dns_alt_names = pmaster.local,server
+dns_alt_names = pmaster.if083,server
 [main]
-certname = pmaster.local
-server = pmaster.local
+certname = pmaster.if083
+server = pmaster.if083
 environment = production
 runinterval = 1h
 ' >>/etc/puppetlabs/puppet/puppet.conf
@@ -73,7 +73,7 @@ firewall-cmd --reload
 
 # /opt/puppetlabs/bin/puppet cert sign client.pclient.local
 
-# ## testing 
+# ## testing
 # # /opt/puppetlabs/bin/puppet agent --test
 # ##Output:
 
@@ -82,4 +82,3 @@ firewall-cmd --reload
 # # Info: Retrieving plugin
 # # Info: Caching catalog for client.pclient.local
 # # Info: Applying configuration version '1472165304'
-

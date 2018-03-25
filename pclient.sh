@@ -18,24 +18,24 @@ fi
 
 #  yum -y install ntpdate
 #  ntpdate 0.centos.pool.ntp.org
-  ping -c 5 8.8.8.8 
- rm -fr /etc/localtime 
- ln -s /usr/share/zoneinfo/Europe/Kiev /etc/localtime 
- yum install -y ntpdate 
- ntpdate -u pool.ntp.org 
-  echo "Time zone is set to Kiev" 
+  ping -c 5 8.8.8.8
+ rm -fr /etc/localtime
+ ln -s /usr/share/zoneinfo/Europe/Kiev /etc/localtime
+ yum install -y ntpdate
+ ntpdate -u pool.ntp.org
+  echo "Time zone is set to Kiev"
 
- yum update -y
+ #yum update -y
 
 # -- install apps --
-for i in ${APPS[@]}; do
-  if yum list installed $i
-  then
-    echo "$i already installed"
-  else
-    yum install $i -y
-  fi
-done
+#for i in ${APPS[@]}; do
+#  if yum list installed $i
+#  then
+#    echo "$i already installed"
+#  else
+#    yum install $i -y
+#  fi
+#done
 
 #echo "
 #$PMASTER_IP    $PMASTER_DNAME
@@ -51,7 +51,7 @@ yum install -y puppet-agent
 
 echo "[main]
 certname = $HOSTNAME
-server = pmaster.local
+server = pmaster.if083
 environment = production
 runinterval = 1h
 " >>/etc/puppetlabs/puppet/puppet.conf
@@ -77,7 +77,7 @@ firewall-cmd --reload
 
 # /opt/puppetlabs/bin/puppet cert sign pclient.local
 
-## testing 
+## testing
 #/opt/puppetlabs/bin/puppet agent --test
 ##Output:
 
@@ -86,4 +86,3 @@ firewall-cmd --reload
 # Info: Retrieving plugin
 # Info: Caching catalog for pclient.local
 # Info: Applying configuration version '1472165304'
-
