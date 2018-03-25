@@ -4,19 +4,13 @@
 Vagrant.configure("2") do |config|
   config.ssh.keys_only = false
   config.ssh.insert_key = false
-  #config.ssh.dsa_authentication = false
-  # config.vm.box = "~/virtualbox-centos7.box"
   config.vm.box = "centos/7"
   config.ssh.private_key_path = "~/.vagrant.d/insecure_private_key"
-  #config.ssh.password = "vagrant"
-  #config.network :forwarded_port, guest: 22, host: 10122, id: "ssh"
-  #config.ssh.forward_agent = true
 
   # --- VM for Puppet Master ---
   config.vm.define "pmaster" do |pmaster|
     pmaster.vm.hostname = 'pmaster.if083'
     pmaster.vm.network "private_network", ip: "192.168.56.10"
-
     pmaster.vm.provider "virtualbox" do |vb|
       vb.memory = "2048"
       vb.cpus = "2"
@@ -29,7 +23,6 @@ Vagrant.configure("2") do |config|
   config.vm.define "db" do |db|
     db.vm.hostname = 'db.if083'
     db.vm.network "private_network", ip: "192.168.56.150"
-
     db.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
       vb.cpus = "2"
@@ -38,24 +31,23 @@ Vagrant.configure("2") do |config|
     db.vm.provision "shell",  path: "db.sh"
   end
 
+
   # --- VM with Database Repication ---
   config.vm.define "dbslave" do |db|
     db.vm.hostname = 'dbslave.if083'
     db.vm.network "private_network", ip: "192.168.56.151"
-
     db.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
       vb.cpus = "2"
       vb.name = "DB_VM"
     end
-    db.vm.provision "shell",  path: "db.sh"
+    db.vm.provision "shell",  path: "pclient.sh"
   end
 
   # --- VM with Load Balanser ---
   config.vm.define "balanser" do |lb|
     db.vm.hostname = 'balanser.if083'
     db.vm.network "private_network", ip: "192.168.56.160"
-
     db.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
       vb.cpus = "2"
@@ -68,7 +60,6 @@ Vagrant.configure("2") do |config|
   config.vm.define "web1" do |web|
     web.vm.hostname = 'web1.if083'
     web.vm.network "private_network", ip: "192.168.56.161"
-
     web.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
       vb.cpus = "2"
@@ -81,7 +72,6 @@ Vagrant.configure("2") do |config|
   config.vm.define "web2" do |web|
     web.vm.hostname = 'web2.if083'
     web.vm.network "private_network", ip: "192.168.56.162"
-
     web.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
       vb.cpus = "2"
@@ -94,7 +84,6 @@ Vagrant.configure("2") do |config|
   config.vm.define "web3" do |web|
     web.vm.hostname = 'web3.if083'
     web.vm.network "private_network", ip: "192.168.56.163"
-
     web.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
       vb.cpus = "2"
