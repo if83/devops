@@ -39,10 +39,10 @@ sed -i '/JAVA_ARGS="-Xms2g -Xmx2g/s/2g/512m/g' /etc/sysconfig/puppetserver
 
 echo '
 autosign      = true
-dns_alt_names = pmaster.local,server
+dns_alt_names = pmaster.if083,server
 [main]
-certname = pmaster.local
-server = pmaster.local
+certname = pmaster.if083
+server = pmaster.if083
 environment = production
 runinterval = 1h
 ' >>/etc/puppetlabs/puppet/puppet.conf

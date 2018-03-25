@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PMASTER_IP='192.168.56.10'
-PMASTER_DNAME='pmaster.local'
+PMASTER_DNAME='pmaster.if083'
 # -- add basic tools to VM --
 APPS=(mc net-tools wget git)
 
