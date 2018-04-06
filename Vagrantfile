@@ -28,7 +28,7 @@ Vagrant.configure("2") do |config|
       vb.cpus = "2"
       vb.name = "DB_VM"
     end
-    db.vm.provision "shell",  path: "db.sh"
+    db.vm.provision "shell",  path: "pclient.sh"
   end
 
 
@@ -39,21 +39,21 @@ Vagrant.configure("2") do |config|
     db.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
       vb.cpus = "2"
-      vb.name = "DB_VM"
+      vb.name = "DBSLAVE_VM"
     end
     db.vm.provision "shell",  path: "pclient.sh"
   end
 
   # --- VM with Load Balanser ---
   config.vm.define "balanser" do |lb|
-    db.vm.hostname = 'balanser.if083'
-    db.vm.network "private_network", ip: "192.168.56.160"
-    db.vm.provider "virtualbox" do |vb|
+    lb.vm.hostname = 'balanser.if083'
+    lb.vm.network "private_network", ip: "192.168.56.160"
+    lb.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
       vb.cpus = "2"
-      vb.name = "DB_SLAVE_VM"
+      vb.name = "BALANSER_VM"
     end
-    db.vm.provision "shell",  path: "db.sh"
+    db.vm.provision "shell",  path: "pclient.sh"
   end
 
   # --- VM #1 with Web Application ---
@@ -168,5 +168,18 @@ Vagrant.configure("2") do |config|
       vb.name = "DNS_VM"
     end
     dns.vm.provision "shell",  path: "pclient.sh"
+  end
+
+  # --- VM with Rsyslog Server ---
+  config.vm.define "rsyslog" do |rsyslog|
+    rsyslog.vm.hostname = 'rsyslog.if083'
+    rsyslog.vm.network "private_network", ip: "192.168.56.15"
+
+    rsyslog.vm.provider "virtualbox" do |vb|
+      vb.memory = "1024"
+      vb.cpus = "2"
+      vb.name = "RSYSLOG_VM"
+    end
+    rsyslog.vm.provision "shell",  path: "pclient.sh"
   end
 end
