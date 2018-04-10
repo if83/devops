@@ -57,6 +57,13 @@ firewall-cmd --reload
 /opt/puppetlabs/bin/puppet resource service puppetserver ensure=running enable=true
 
 /opt/puppetlabs/bin/puppet module install puppetlabs-stdlib
+
+cd /etc/puppetlabs/code/environments/production/
+git init
+git remote add origin https://github.com/if83/production.git
+git fetch
+git checkout -f master
+
 # after request from client: do at puppetserver:
 # sudo /opt/puppetlabs/bin/puppet cert list		# to see any outstanding requests.
 
