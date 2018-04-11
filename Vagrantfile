@@ -48,6 +48,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "balancer" do |lb|
     lb.vm.hostname = 'balancer.if083'
     lb.vm.network "private_network", ip: "192.168.56.160"
+    lb.vm.network "forwarded_port", guest: 80, host: 80
     lb.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
       vb.cpus = "2"
@@ -96,7 +97,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "jenkins" do |jenkins|
     jenkins.vm.hostname = 'jenkins.if083'
     jenkins.vm.network "private_network", ip: "192.168.56.170"
-
+    jenkins.vm.network "forwarded_port", guest: 56170, host: 8080
     jenkins.vm.provider "virtualbox" do |vb|
       vb.memory = "1024"
       vb.cpus = "2"
@@ -109,26 +110,13 @@ Vagrant.configure("2") do |config|
   config.vm.define "sonar" do |sonar|
     sonar.vm.hostname = 'sonar.if083'
     sonar.vm.network "private_network", ip: "192.168.56.180"
-
+    sonar.vm.network "forwarded_port", guest: 56180, host: 9000
     sonar.vm.provider "virtualbox" do |vb|
       vb.memory = "2048"
       vb.cpus = "2"
       vb.name = "SONAR_VM"
     end
     sonar.vm.provision "shell",  path: "pclient.sh"
-  end
-
-  # --- VM with GitLab ---
-  config.vm.define "gitlab" do |gitlab|
-    gitlab.vm.hostname = "gitlab.if083"
-    gitlab.vm.network "private_network", ip: "192.168.56.190"
-
-    gitlab.vm.provider "virtualbox" do |vb|
-      vb.memory = "512"
-      vb.cpus = "2"
-      vb.name = "GITLAB_VM"
-    end
-    gitlab.vm.provision "shell",  path: "pclient.sh"
   end
 
   # --- VM with Local Repository ---
@@ -148,7 +136,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "zabbix" do |zabbix|
     zabbix.vm.hostname = 'zabbix.if083'
     zabbix.vm.network "private_network", ip: "192.168.56.200"
-
+    zabbix.vm.network "forwarded_port", guest: 56200, host: 80
     zabbix.vm.provider "virtualbox" do |vb|
       vb.memory = "1024"
       vb.cpus = "2"
