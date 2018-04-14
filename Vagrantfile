@@ -19,6 +19,30 @@ Vagrant.configure("2") do |config|
     pmaster.vm.provision "shell",  path: "pmaster.sh"
   end
 
+  # --- VM with DNS Server ---
+  config.vm.define "dns" do |dns|
+    dns.vm.hostname = 'dns.if083'
+    dns.vm.network "private_network", ip: "192.168.56.2"
+    dns.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+      vb.cpus = "2"
+      vb.name = "DNS_VM"
+    end
+    dns.vm.provision "shell",  path: "pclient.sh"
+  end
+
+  # --- VM with Rsyslog Server ---
+  config.vm.define "rsyslog" do |rsyslog|
+    rsyslog.vm.hostname = 'rsyslog.if083'
+    rsyslog.vm.network "private_network", ip: "192.168.56.15"
+    rsyslog.vm.provider "virtualbox" do |vb|
+      vb.memory = "1024"
+      vb.cpus = "2"
+      vb.name = "RSYSLOG_VM"
+    end
+    rsyslog.vm.provision "shell",  path: "pclient.sh"
+  end
+
   # --- VM with Main Database ---
   config.vm.define "db" do |db|
     db.vm.hostname = 'db.if083'
@@ -143,31 +167,5 @@ Vagrant.configure("2") do |config|
       vb.name = "ZABBIX_VM"
     end
     zabbix.vm.provision "shell",  path: "pclient.sh"
-  end
-
-  # --- VM with DNS Server ---
-  config.vm.define "dns" do |dns|
-    dns.vm.hostname = 'dns.if083'
-    dns.vm.network "private_network", ip: "192.168.56.2"
-
-    dns.vm.provider "virtualbox" do |vb|
-      vb.memory = "512"
-      vb.cpus = "2"
-      vb.name = "DNS_VM"
-    end
-    dns.vm.provision "shell",  path: "pclient.sh"
-  end
-
-  # --- VM with Rsyslog Server ---
-  config.vm.define "rsyslog" do |rsyslog|
-    rsyslog.vm.hostname = 'rsyslog.if083'
-    rsyslog.vm.network "private_network", ip: "192.168.56.15"
-
-    rsyslog.vm.provider "virtualbox" do |vb|
-      vb.memory = "1024"
-      vb.cpus = "2"
-      vb.name = "RSYSLOG_VM"
-    end
-    rsyslog.vm.provision "shell",  path: "pclient.sh"
   end
 end
