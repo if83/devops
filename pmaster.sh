@@ -1,5 +1,6 @@
 #!/bin/bash
 
+$DNS_IP = '192.168.56.2'       # added 04.20.17
 # -- add basic tools to VM --
 APPS=(mc net-tools wget git tree)
 
@@ -17,9 +18,11 @@ yum install -y ntpdate
 ntpdate -u pool.ntp.org
 echo "Time zone is set to Kiev"
 
-#Add network hosts
- cat /vagrant/hosts.local >>/etc/hosts
- rm -f /vagrant/hosts.local
+       ## commented 04.20.17
+# #Add network hosts
+#  cat /vagrant/hosts.local >>/etc/hosts
+#  rm -f /vagrant/hosts.local
+       ## commented 04.20.17
 
 # -- add basic tools to VM --
  yum update -y
@@ -64,6 +67,12 @@ git remote add origin https://github.com/if83/production.git
 git fetch
 git checkout -f master
 
+       # added 04.20.17
+sed -i "/search/ a nameserver ${DNS_IP}" /etc/resolv.conf
+sed -i '/plugins=/ a dns=none' /etc/NetworkManager/NetworkManager.conf
+systemctl restart NetworkManager
+systemctl restart network
+       # added 04.20.17
 # after request from client: do at puppetserver:
 # sudo /opt/puppetlabs/bin/puppet cert list		# to see any outstanding requests.
 

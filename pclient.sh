@@ -1,5 +1,6 @@
 #!/bin/bash
 
+$DNS_IP = '192.168.56.2'       # added 04.20.17
 PMASTER_IP='192.168.56.10'
 PMASTER_DNAME='pmaster.if083'
 # -- add basic tools to VM --
@@ -11,10 +12,11 @@ if [ $UID != 0 ];
 	echo "This script needs root privileges, would you log as sudo user?!"
    	sudo -s
 fi
-
-#Add network hosts
- cat /vagrant/hosts.local >>/etc/hosts
- rm -f /vagrant/hosts.local
+       ## commented 04.20.17
+# #Add network hosts
+#  cat /vagrant/hosts.local >>/etc/hosts
+#  rm -f /vagrant/hosts.local
+       ## commented 04.20.17
 
 #  yum -y install ntpdate
 #  ntpdate 0.centos.pool.ntp.org
@@ -37,12 +39,13 @@ fi
 #  fi
 #done
 
-#echo "
-#$PMASTER_IP    $PMASTER_DNAME
-#" >> /etc/hosts
+       # uncommented 04.20.17
+echo "
+$PMASTER_IP    $PMASTER_DNAME
+" >> /etc/hosts
 
-#echo "$HOSTNAME" > /etc/hostname
-
+echo "$HOSTNAME" > /etc/hostname
+       # uncommented 04.20.17
 
 rpm -Uvh https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
 
@@ -61,6 +64,13 @@ firewall-cmd --permanent --zone=public --add-port=8140/tcp
 firewall-cmd --reload
 
 /opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true
+
+       # added 04.20.17
+sed -i "/search/ a nameserver 192.168.56.2" /etc/resolv.conf
+sed -i '/plugins=/ a dns=none' /etc/NetworkManager/NetworkManager.conf
+systemctl restart NetworkManager
+systemctl restart network
+       # added 04.20.17
 
 # OUTPUT:
 # Notice: /Service[puppet]/ensure: ensure changed 'stopped' to 'running'
