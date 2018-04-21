@@ -68,19 +68,6 @@ Vagrant.configure("2") do |config|
     dbslave.vm.provision "shell",  path: "pclient.sh"
   end
 
-  # --- VM with Load Balancer ---
-  config.vm.define "balancer" do |lb|
-    lb.vm.hostname = 'balancer.if083'
-    lb.vm.network "private_network", ip: "192.168.56.160"
-    lb.vm.network "forwarded_port", guest: 80, host: 80
-    lb.vm.provider "virtualbox" do |vb|
-      vb.memory = "512"
-      vb.cpus = "2"
-      vb.name = "BALANCER_VM"
-    end
-    lb.vm.provision "shell",  path: "pclient.sh"
-  end
-
   # --- VM #1 with Web Application ---
   config.vm.define "web1" do |web1|
     web1.vm.hostname = 'web1.if083'
@@ -115,6 +102,19 @@ Vagrant.configure("2") do |config|
       vb.name = "WEB_VM_3"
     end
     web3.vm.provision "shell",  path: "pclient.sh"
+  end
+
+  # --- VM with Load Balancer ---
+  config.vm.define "balancer" do |lb|
+    lb.vm.hostname = 'balancer.if083'
+    lb.vm.network "private_network", ip: "192.168.56.160"
+    lb.vm.network "forwarded_port", guest: 80, host: 80
+    lb.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+      vb.cpus = "2"
+      vb.name = "BALANCER_VM"
+    end
+    lb.vm.provision "shell",  path: "pclient.sh"
   end
 
   # --- VM with Jenkins ---
@@ -160,7 +160,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "zabbix" do |zabbix|
     zabbix.vm.hostname = 'zabbix.if083'
     zabbix.vm.network "private_network", ip: "192.168.56.200"
-    zabbix.vm.network "forwarded_port", guest: 56200, host: 80
+    #zabbix.vm.network "forwarded_port", guest: 56200, host: 80
     zabbix.vm.provider "virtualbox" do |vb|
       vb.memory = "1024"
       vb.cpus = "2"
