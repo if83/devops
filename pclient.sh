@@ -1,6 +1,6 @@
 #!/bin/bash
 
-$DNS_IP = '192.168.56.2'       # added 04.20.17
+DNS_IP='192.168.56.2'
 PMASTER_IP='192.168.56.10'
 PMASTER_DNAME='pmaster.if083'
 # -- add basic tools to VM --
@@ -66,9 +66,9 @@ firewall-cmd --reload
 /opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true
 
        # added 04.20.17
-sed -i "/search/ a nameserver 192.168.56.2" /etc/resolv.conf
 sed -i '/plugins=/ a dns=none' /etc/NetworkManager/NetworkManager.conf
 systemctl restart NetworkManager
+sed -i "/search/ a nameserver $DNS_IP" /etc/resolv.conf
 systemctl restart network
        # added 04.20.17
 
