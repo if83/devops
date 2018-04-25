@@ -43,6 +43,18 @@ Vagrant.configure("2") do |config|
     rsyslog.vm.provision "shell",  path: "pclient.sh"
   end
 
+  # --- VM with ELK Server ---
+  config.vm.define "elk" do |elk|
+    rsyslog.vm.hostname = 'elk.if083'
+    rsyslog.vm.network "private_network", ip: "192.168.56.20"
+    rsyslog.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+      vb.cpus = "2"
+      vb.name = "ELK_VM"
+    end
+    elk.vm.provision "shell",  path: "pclient.sh"
+  end
+
   # --- VM with Main Database ---
   config.vm.define "db" do |db|
     db.vm.hostname = 'db.if083'

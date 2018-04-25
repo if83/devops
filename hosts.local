@@ -1,6 +1,7 @@
 192.168.56.2    dns.if083        dns
 192.168.56.10   pmaster.if083    pmaster
 192.168.56.15   rsyslog.if083    rsyslog
+192.168.56.20   elk.if083        elk
 192.168.56.150	db.if083         db
 192.168.56.151  dbslave.if083    dbslave
 192.168.56.160	balancer.if083   balancer
