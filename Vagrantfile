@@ -48,7 +48,7 @@ Vagrant.configure("2") do |config|
     rsyslog.vm.hostname = 'elk.if083'
     rsyslog.vm.network "private_network", ip: "192.168.56.20"
     rsyslog.vm.provider "virtualbox" do |vb|
-      vb.memory = "512"
+      vb.memory = "2048"
       vb.cpus = "2"
       vb.name = "ELK_VM"
     end
